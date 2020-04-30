@@ -41,8 +41,78 @@ var sum = function(array) {
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
-   
+    //create new array
+    console.log("array at beginning: " + array);
+    let newArray= array.slice();
+    //test for empty arrays
+    if (newArray.length===0){
+        return 0;
+    }
+
+    if (newArray.length===1){  //base case
+        if(Array.isArray(newArray[0])){
+            newArray=newArray[0];
+        } else {
+            return newArray[0];
+        }
+        
+    }
+    
+    //HAVE TO REMOVE ALL ARRAYS! What do we do with arrays in arrays in arrays?
+    let lastElement=newArray[newArray.length -1];
+    let secondLastElement= newArray[newArray.length -2];
+
+    function getToIntegers(array, startingSum){
+        let integerArray=array.slice();
+        let sum=startingSum;
+        /////FILL THIS IN
+        for(let i=0; i<integerArray.length; i++){
+            let value;
+            if(Array.isArray(integerArray[i])){
+               value=getToIntegers(integerArray[i], 0);
+
+            }else{
+               value=integerArray[i];
+            }
+
+            sum+=value;
+        }
+        return sum;
+
+    }
+
+        
+    
+
+    if(Array.isArray(lastElement)){ //[[2 ,3 , [4]]]
+        lastElement= getToIntegers(lastElement, 0);
+        
+
+    } 
+    if(Array.isArray(secondLastElement)){
+        secondLastElement= getToIntegers(secondLastElement, 0);
+        //reset secondlastelement to equal sum of array
+    }
+
+    //asign lastELment and secondLastElement to integers
+
+    let sumOfLastTwo=lastElement+ secondLastElement;
+    newArray.pop();
+    newArray.pop();
+    newArray.push(sumOfLastTwo);
+    
+    return arraySum(newArray);
 };
+    
+
+    //last element-->sum of its elements
+    //second to last element --?sum of its elements
+    //add last two elements together
+    //pop last two elements
+    //push sum 
+    //return arraySum(newArray);
+   
+
 
 // 4. Check if a number is even.
 var isEven = function(n) {
